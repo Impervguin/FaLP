@@ -3,21 +3,25 @@ domains
  int = integer.
 
 predicates
+  rfactorial(num, int, int).
   factorial(num, int).
+  rfibbonacci(num, int, int, int).
   fibbonacci(num, int).
 
 clauses
-  factorial(1, 1) :- !.
-  factorial(N, Result) :- N > 0,
+  rfactorial(1, Acc, Acc) :- !.
+  rfactorial(N, Acc, Res) :- N > 0,
     PrevN = N - 1,
-    factorial(PrevN, PrevResult), !,
-    Result = PrevResult * N.
+    NewAcc = Acc * N,
+    rfactorial(PrevN, NewAcc, Res).
+  factorial(N, Result) :- rfactorial(N, 1, Result).
   
-  fibbonacci(0, 1) :- !.
-  fibbonacci(1, 1) :- !.
-  fibbonacci(N, Result) :- N > 1,
+  
+  rfibbonacci(1, _, F2, F2) :- !.
+  rfibbonacci(N, F1, F2, Res) :- N > 1,
+    NewF1 = F2,
+    NewF2 = F1 + F2,
     PrevN = N - 1,
-    PrevPrevN = N - 2,
-    fibbonacci(PrevN, PrevResult), !,
-    fibbonacci(PrevPrevN, PrevPrevResult), !,
-    Result = PrevResult + PrevPrevResult.
+    rfibbonacci(PrevN, NewF1, NewF2, Res).
+  fibbonacci(0, 0) :- !.
+  fibbonacci(N, Result) :- rfibbonacci(N, 0, 1, Result).
