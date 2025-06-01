@@ -51,6 +51,5 @@ clauses
   delall([Elem | Tail], Elem, ResTail) :- delall(Tail, Elem, ResTail), !.
   delall([Elem | Tail], Num, [Elem | ResTail]) :- delall(Tail, Num, ResTail).
   
-  join([], [], []) :- !.
-  join([], [Elem | Tail], [Elem | ResTail]) :- join(Tail, [], ResTail), !.
+  join([], List, List) :- !.
   join([Elem | Tail], List, [Elem | ResTail]) :- join(Tail, List, ResTail).
